@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bfw="https://bifrostforge.world/schema/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" exporter="Bifrost Forge World" exporterVersion="0.1.0">
+  <bpmn:extensionElements>
+    <bfw:properties>
+      <bfw:linterRulesetScore rulesetId="bpmn-production-ready" scorePercent="90" complianceStatus="risky" computedAtIso="2026-09-25T10:55:12.577Z" schemaVersion="1" maxPoints="10" penaltyPoints="1" rawErrorFindings="0" rawWarningFindings="2" />
+      <bfw:linterRulesetScore rulesetId="bpmn-development" scorePercent="95" complianceStatus="valid" computedAtIso="2026-09-23T20:07:51.677Z" schemaVersion="1" maxPoints="10" penaltyPoints="0.5" rawErrorFindings="0" rawWarningFindings="1" />
+    </bfw:properties>
+  </bpmn:extensionElements>
+  <bpmn:message id="Msg_cancel" name="cancel-task" />
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_MessageBoundaryInterrupting" name="Message Boundary Interrupting" processRef="MessageBoundaryInterrupting" />
+  </bpmn:collaboration>
+  <bpmn:process id="MessageBoundaryInterrupting" name="Message Boundary Interrupting" isExecutable="true">
+    <bpmn:extensionElements>
+      <bfw:version>1.0.0</bfw:version>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_default" name="default">
+        <bpmn:flowNodeRef>Start_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_normal</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Boundary_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_cancelled</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_1" name="Start" />
+    <bpmn:userTask id="UserTask_1" name="Do Work">
+      <bpmn:extensionElements>
+        <bfw:assignees>identity.groups</bfw:assignees>
+        <bfw:formFields>{"fields":[]}</bfw:formFields>
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_normal" name="Normal End" />
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="Start_1" targetRef="UserTask_1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="UserTask_1" targetRef="End_normal" />
+    <bpmn:sequenceFlow id="Flow_BE" sourceRef="Boundary_1" targetRef="End_cancelled" />
+    <bpmn:boundaryEvent id="Boundary_1" attachedToRef="UserTask_1">
+      <bpmn:messageEventDefinition messageRef="Msg_cancel" />
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="End_cancelled" name="Cancelled End" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Shape_Participant_MessageBoundaryInterrupting" bpmnElement="Participant_MessageBoundaryInterrupting" isHorizontal="true">
+        <dc:Bounds x="82" y="102" width="486" height="248" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_default" bpmnElement="Lane_default" isHorizontal="true">
+        <dc:Bounds x="112" y="102" width="456" height="248" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Start_1" bpmnElement="Start_1">
+        <dc:Bounds x="162" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_UserTask_1" bpmnElement="UserTask_1">
+        <dc:Bounds x="290" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_normal" bpmnElement="End_normal">
+        <dc:Bounds x="482" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_cancelled" bpmnElement="End_cancelled">
+        <dc:Bounds x="482" y="292" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="464" y="328" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Boundary_1" bpmnElement="Boundary_1">
+        <dc:Bounds x="372" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_1" bpmnElement="Flow_1">
+        <di:waypoint x="198" y="200" />
+        <di:waypoint x="290" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_2" bpmnElement="Flow_2">
+        <di:waypoint x="390" y="200" />
+        <di:waypoint x="482" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_BE" bpmnElement="Flow_BE">
+        <di:waypoint x="390" y="258" />
+        <di:waypoint x="390" y="310" />
+        <di:waypoint x="482" y="310" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

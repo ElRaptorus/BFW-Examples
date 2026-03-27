@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bfw="https://bifrostforge.world/schema/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_CapDoaOversize" exporter="Bifrost Forge World" exporterVersion="0.1.0">
+  <bpmn:extensionElements>
+    <bfw:properties>
+      <bfw:linterRulesetScore rulesetId="bpmn-production-ready" scorePercent="81.25" complianceStatus="failed" computedAtIso="2026-09-23T20:07:42.161Z" schemaVersion="1" maxPoints="8" penaltyPoints="1.5" rawErrorFindings="1" rawWarningFindings="1" />
+      <bfw:linterRulesetScore rulesetId="bpmn-development" scorePercent="94.44444444444444" complianceStatus="valid" computedAtIso="2026-09-25T11:12:31.312Z" schemaVersion="1" maxPoints="9" penaltyPoints="0.5" rawErrorFindings="0" rawWarningFindings="1" />
+    </bfw:properties>
+  </bpmn:extensionElements>
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_CapDoaOversize" name="Cap DOA Oversize" processRef="CapDoaOversize" />
+  </bpmn:collaboration>
+  <bpmn:process id="CapDoaOversize" name="Cap DOA Oversize" isExecutable="true">
+    <bpmn:extensionElements>
+      <bfw:version>1.0.0</bfw:version>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_default" name="default">
+        <bpmn:flowNodeRef>Start_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_1</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_1" name="Start" />
+    <bpmn:serviceTask id="ServiceTask_1" name="Echo With DOA" implementation="echo">
+      <bpmn:dataOutputAssociation id="DOA_order_payload">
+        <bpmn:targetRef>DOR_order_payload</bpmn:targetRef>
+        <bpmn:transformation>{a: token, b: token}</bpmn:transformation>
+      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1cdjr6x">
+        <bpmn:targetRef>DOR_order_payload</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="End_1" name="End" />
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="Start_1" targetRef="ServiceTask_1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="ServiceTask_1" targetRef="End_1" />
+    <bpmn:dataObjectReference id="DOR_order_payload" dataObjectRef="order_payload" />
+    <bpmn:dataObject id="order_payload" name="order_payload" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Shape_Participant_CapDoaOversize" bpmnElement="Participant_CapDoaOversize" isHorizontal="true">
+        <dc:Bounds x="82" y="130" width="486" height="300" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_default" bpmnElement="Lane_default" isHorizontal="true">
+        <dc:Bounds x="112" y="130" width="456" height="300" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Start_1" bpmnElement="Start_1">
+        <dc:Bounds x="162" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ServiceTask_1" bpmnElement="ServiceTask_1">
+        <dc:Bounds x="290" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_1" bpmnElement="End_1">
+        <dc:Bounds x="482" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_DOR_order_payload" bpmnElement="DOR_order_payload">
+        <dc:Bounds x="322" y="315" width="36" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_1" bpmnElement="Flow_1">
+        <di:waypoint x="198" y="200" />
+        <di:waypoint x="290" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_2" bpmnElement="Flow_2">
+        <di:waypoint x="390" y="200" />
+        <di:waypoint x="482" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1cdjr6x_di" bpmnElement="DataOutputAssociation_1cdjr6x">
+        <di:waypoint x="341" y="240" />
+        <di:waypoint x="342" y="315" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

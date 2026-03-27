@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bfw="https://bifrostforge.world/schema/bpmn" id="Definitions_ErrBoundaryVsEsp" targetNamespace="https://bifrostforge.world/schema/bpmn" exporter="Bifrost Forge World" exporterVersion="0.1.0">
+  <bpmn:extensionElements>
+    <bfw:properties>
+      <bfw:linterRulesetScore rulesetId="bpmn-production-ready" scorePercent="94.73684210526315" complianceStatus="risky" computedAtIso="2026-09-25T10:55:11.997Z" schemaVersion="1" maxPoints="19" penaltyPoints="1" rawErrorFindings="0" rawWarningFindings="3" />
+      <bfw:linterRulesetScore rulesetId="bpmn-development" scorePercent="97.36842105263158" complianceStatus="valid" computedAtIso="2026-09-23T20:07:51.119Z" schemaVersion="1" maxPoints="19" penaltyPoints="0.5" rawErrorFindings="0" rawWarningFindings="1" />
+    </bfw:properties>
+  </bpmn:extensionElements>
+  <bpmn:error id="Error_1" name="Test Error" errorCode="TEST_ERROR" />
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_1" name="Default" processRef="EspConflictErrBoundaryVsEsp" />
+  </bpmn:collaboration>
+  <bpmn:process id="EspConflictErrBoundaryVsEsp" name="Default" isExecutable="true">
+    <bpmn:extensionElements>
+      <bfw:version>1.0.0</bfw:version>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_default" name="default">
+        <bpmn:flowNodeRef>Start_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_BoundaryCaught</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Normal</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>SubProcess_A</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ESP_Error</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>BE_Error</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:subProcess id="SubProcess_A" name="Subprocess A">
+      <bpmn:startEvent id="Sub_Start" name="Sub Start">
+        <bpmn:outgoing>Sub_Flow_1</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:userTask id="Sub_UserTask" name="Arm error">
+        <bpmn:incoming>Sub_Flow_1</bpmn:incoming>
+        <bpmn:outgoing>Sub_Flow_Arm</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:endEvent id="Sub_ErrorEnd" name="Error End">
+        <bpmn:incoming>Sub_Flow_Arm</bpmn:incoming>
+        <bpmn:errorEventDefinition id="Sub_ErrDef" errorRef="Error_1">
+          <bpmn:extensionElements>
+            <bfw:errorCode>TEST_ERROR</bfw:errorCode>
+            <bfw:errorMessage>Test error from subprocess</bfw:errorMessage>
+          </bpmn:extensionElements>
+        </bpmn:errorEventDefinition>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Sub_Flow_1" sourceRef="Sub_Start" targetRef="Sub_UserTask" />
+      <bpmn:sequenceFlow id="Sub_Flow_Arm" sourceRef="Sub_UserTask" targetRef="Sub_ErrorEnd" />
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="Start_1" targetRef="SubProcess_A" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="SubProcess_A" targetRef="End_Normal" />
+    <bpmn:sequenceFlow id="Flow_BE" sourceRef="BE_Error" targetRef="End_BoundaryCaught" />
+    <bpmn:boundaryEvent id="BE_Error" attachedToRef="SubProcess_A">
+      <bpmn:outgoing>Flow_BE</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="BE_ErrDef" />
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="End_BoundaryCaught" name="Boundary Caught">
+      <bpmn:incoming>Flow_BE</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="End_Normal" name="Normal End">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:subProcess id="ESP_Error" name="Error ESP" triggeredByEvent="true">
+      <bpmn:startEvent id="ESP_Error_Start" name="ESP Error Start">
+        <bpmn:outgoing>ESP_Error_Flow_1</bpmn:outgoing>
+        <bpmn:errorEventDefinition id="ESP_Error_ErrDef" />
+      </bpmn:startEvent>
+      <bpmn:endEvent id="ESP_Error_End" name="ESP Error End">
+        <bpmn:incoming>ESP_Error_Flow_1</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="ESP_Error_Flow_1" sourceRef="ESP_Error_Start" targetRef="ESP_Error_End" />
+    </bpmn:subProcess>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Shape_Participant_1" bpmnElement="Participant_1" isHorizontal="true">
+        <dc:Bounds x="82" y="60" width="638" height="440" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_default" bpmnElement="Lane_default" isHorizontal="true">
+        <dc:Bounds x="112" y="60" width="608" height="440" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Start_1" bpmnElement="Start_1">
+        <dc:Bounds x="162" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_BoundaryCaught" bpmnElement="End_BoundaryCaught">
+        <dc:Bounds x="612" y="312" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="587" y="348" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_Normal" bpmnElement="End_Normal">
+        <dc:Bounds x="612" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="601" y="228" width="59" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_SubProcess_A" bpmnElement="SubProcess_A" isExpanded="true">
+        <dc:Bounds x="260" y="120" width="300" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Sub_Start" bpmnElement="Sub_Start">
+        <dc:Bounds x="280" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Sub_UserTask" bpmnElement="Sub_UserTask">
+        <dc:Bounds x="340" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Sub_ErrorEnd" bpmnElement="Sub_ErrorEnd">
+        <dc:Bounds x="480" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Sub_Flow_1" bpmnElement="Sub_Flow_1">
+        <di:waypoint x="316" y="200" />
+        <di:waypoint x="340" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Sub_Flow_Arm" bpmnElement="Sub_Flow_Arm">
+        <di:waypoint x="440" y="200" />
+        <di:waypoint x="480" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Shape_ESP_Error" bpmnElement="ESP_Error" isExpanded="true">
+        <dc:Bounds x="260" y="360" width="300" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ESP_Error_Start" bpmnElement="ESP_Error_Start">
+        <dc:Bounds x="290" y="402" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="270" y="438" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ESP_Error_End" bpmnElement="ESP_Error_End">
+        <dc:Bounds x="460" y="402" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="442" y="438" width="73" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_ESP_Error_Flow_1" bpmnElement="ESP_Error_Flow_1">
+        <di:waypoint x="326" y="420" />
+        <di:waypoint x="460" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Shape_BE_Error" bpmnElement="BE_Error">
+        <dc:Bounds x="420" y="262" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_1" bpmnElement="Flow_1">
+        <di:waypoint x="198" y="200" />
+        <di:waypoint x="260" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_2" bpmnElement="Flow_2">
+        <di:waypoint x="560" y="210" />
+        <di:waypoint x="612" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_BE" bpmnElement="Flow_BE">
+        <di:waypoint x="438" y="298" />
+        <di:waypoint x="438" y="330" />
+        <di:waypoint x="612" y="330" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

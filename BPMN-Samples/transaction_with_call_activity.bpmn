@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bfw="https://bifrostforge.world/schema/bpmn" id="Definitions_1" targetNamespace="https://bifrostforge.world/schema/bpmn" exporter="Bifrost Forge World" exporterVersion="0.1.0">
+  <bpmn:extensionElements>
+    <bfw:properties>
+      <bfw:linterRulesetScore rulesetId="bpmn-production-ready" scorePercent="90.47619047619048" complianceStatus="risky" computedAtIso="2026-09-25T10:55:13.717Z" schemaVersion="1" maxPoints="21" penaltyPoints="2" rawErrorFindings="0" rawWarningFindings="6" />
+      <bfw:linterRulesetScore rulesetId="bpmn-development" scorePercent="97.5" complianceStatus="valid" computedAtIso="2026-09-25T10:55:02.322Z" schemaVersion="1" maxPoints="20" penaltyPoints="0.5" rawErrorFindings="0" rawWarningFindings="1" />
+    </bfw:properties>
+  </bpmn:extensionElements>
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_1" name="Transaction With Call Activity" processRef="transaction_with_call_activity" />
+  </bpmn:collaboration>
+  <bpmn:process id="transaction_with_call_activity" name="Transaction With Call Activity" isExecutable="true">
+    <bpmn:extensionElements>
+      <bfw:version>1.0.0</bfw:version>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_default" name="default">
+        <bpmn:flowNodeRef>Start_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Tx_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Boundary_Cancel</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Normal</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:transaction id="Tx_1" name="My Transaction">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:laneSet id="LaneSet_Tx">
+        <bpmn:lane id="Lane_Tx" name="default">
+          <bpmn:flowNodeRef>Tx_Start</bpmn:flowNodeRef>
+          <bpmn:flowNodeRef>Tx_Fork</bpmn:flowNodeRef>
+          <bpmn:flowNodeRef>Tx_CA</bpmn:flowNodeRef>
+        </bpmn:lane>
+      </bpmn:laneSet>
+      <bpmn:startEvent id="Tx_Start" name="TX Start">
+        <bpmn:outgoing>TxFlow_1</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:parallelGateway id="Tx_Fork" name="Fork">
+        <bpmn:incoming>TxFlow_1</bpmn:incoming>
+        <bpmn:outgoing>TxFlow_2</bpmn:outgoing>
+        <bpmn:outgoing>TxFlow_3</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:callActivity id="Tx_CA" name="Child Process" calledElement="tx_ca_child">
+        <bpmn:incoming>TxFlow_2</bpmn:incoming>
+        <bpmn:outgoing>TxFlow_4</bpmn:outgoing>
+      </bpmn:callActivity>
+      <bpmn:userTask id="Tx_CancelGate" name="Arm cancel">
+        <bpmn:incoming>TxFlow_3</bpmn:incoming>
+        <bpmn:outgoing>TxFlow_CancelGate</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:endEvent id="Tx_CancelEnd" name="Cancel">
+        <bpmn:incoming>TxFlow_CancelGate</bpmn:incoming>
+        <bpmn:cancelEventDefinition />
+      </bpmn:endEvent>
+      <bpmn:endEvent id="Tx_End" name="TX End">
+        <bpmn:incoming>TxFlow_4</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="TxFlow_1" sourceRef="Tx_Start" targetRef="Tx_Fork" />
+      <bpmn:sequenceFlow id="TxFlow_2" sourceRef="Tx_Fork" targetRef="Tx_CA" />
+      <bpmn:sequenceFlow id="TxFlow_3" sourceRef="Tx_Fork" targetRef="Tx_CancelGate" />
+      <bpmn:sequenceFlow id="TxFlow_CancelGate" sourceRef="Tx_CancelGate" targetRef="Tx_CancelEnd" />
+      <bpmn:sequenceFlow id="TxFlow_4" sourceRef="Tx_CA" targetRef="Tx_End" />
+    </bpmn:transaction>
+    <bpmn:boundaryEvent id="Boundary_Cancel" attachedToRef="Tx_1">
+      <bpmn:outgoing>Flow_Cancel</bpmn:outgoing>
+      <bpmn:cancelEventDefinition />
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="End_Normal" name="End Normal">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="Start_1" targetRef="Tx_1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Tx_1" targetRef="End_Normal" />
+    <bpmn:sequenceFlow id="Flow_Cancel" sourceRef="Boundary_Cancel" targetRef="End_Cancelled" />
+    <bpmn:endEvent id="End_Cancelled" name="Order Cancelled">
+      <bpmn:incoming>Flow_Cancel</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Shape_Participant_1" bpmnElement="Participant_1" isHorizontal="true">
+        <dc:Bounds x="102" y="50" width="856" height="390" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Start_1" bpmnElement="Start_1">
+        <dc:Bounds x="162" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_Cancelled" bpmnElement="End_Cancelled">
+        <dc:Bounds x="632" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="610" y="418" width="81" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Tx_1" bpmnElement="Tx_1" isExpanded="true">
+        <dc:Bounds x="260" y="80" width="560" height="280" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Tx_Start" bpmnElement="Tx_Start">
+        <dc:Bounds x="292" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Tx_Fork" bpmnElement="Tx_Fork">
+        <dc:Bounds x="390" y="185" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="450" y="203" width="22" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Tx_CA" bpmnElement="Tx_CA">
+        <dc:Bounds x="500" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Tx_End" bpmnElement="Tx_End">
+        <dc:Bounds x="672" y="122" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Tx_CancelEnd" bpmnElement="Tx_CancelEnd">
+        <dc:Bounds x="672" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="673" y="318" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Tx_CancelGate" bpmnElement="Tx_CancelGate">
+        <dc:Bounds x="500" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_TxFlow_1" bpmnElement="TxFlow_1">
+        <di:waypoint x="328" y="210" />
+        <di:waypoint x="390" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_TxFlow_2" bpmnElement="TxFlow_2">
+        <di:waypoint x="415" y="185" />
+        <di:waypoint x="415" y="140" />
+        <di:waypoint x="500" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_TxFlow_3" bpmnElement="TxFlow_3">
+        <di:waypoint x="415" y="235" />
+        <di:waypoint x="415" y="300" />
+        <di:waypoint x="500" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_TxFlow_CancelGate" bpmnElement="TxFlow_CancelGate">
+        <di:waypoint x="600" y="300" />
+        <di:waypoint x="672" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_TxFlow_4" bpmnElement="TxFlow_4">
+        <di:waypoint x="600" y="140" />
+        <di:waypoint x="672" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Shape_End_Normal" bpmnElement="End_Normal">
+        <dc:Bounds x="892" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Boundary_Cancel" bpmnElement="Boundary_Cancel">
+        <dc:Bounds x="442" y="342" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_1" bpmnElement="Flow_1">
+        <di:waypoint x="198" y="200" />
+        <di:waypoint x="260" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_2" bpmnElement="Flow_2">
+        <di:waypoint x="820" y="200" />
+        <di:waypoint x="892" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Cancel" bpmnElement="Flow_Cancel">
+        <di:waypoint x="460" y="378" />
+        <di:waypoint x="460" y="400" />
+        <di:waypoint x="632" y="400" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

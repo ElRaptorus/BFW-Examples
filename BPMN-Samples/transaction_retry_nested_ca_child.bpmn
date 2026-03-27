@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bfw="https://bifrostforge.world/schema/bpmn" id="Definitions_child_retry_ca" targetNamespace="https://bifrostforge.world/schema/bpmn">
+  <bpmn:extensionElements>
+    <bfw:properties>
+      <bfw:linterRulesetScore rulesetId="bpmn-production-ready" scorePercent="83.33333333333334" complianceStatus="failed" computedAtIso="2026-09-25T10:55:13.650Z" schemaVersion="1" maxPoints="6" penaltyPoints="1" rawErrorFindings="1" rawWarningFindings="1" />
+      <bfw:linterRulesetScore rulesetId="bpmn-development" scorePercent="91.66666666666666" complianceStatus="valid" computedAtIso="2026-09-25T10:55:02.255Z" schemaVersion="1" maxPoints="6" penaltyPoints="0.5" rawErrorFindings="0" rawWarningFindings="1" />
+    </bfw:properties>
+  </bpmn:extensionElements>
+  <bpmn:collaboration id="Collaboration_child_retry_ca">
+    <bpmn:participant id="Participant_child_retry_ca" name="TX Retry CA Child" processRef="tx_retry_ca_child" />
+  </bpmn:collaboration>
+  <bpmn:process id="tx_retry_ca_child" name="TX Retry CA Child" isExecutable="true">
+    <bpmn:extensionElements>
+      <bfw:version>1.0.0</bfw:version>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_c1">
+      <bpmn:lane id="Lane_c1" name="default">
+        <bpmn:flowNodeRef>CStart_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CFatalTask_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CEnd_1</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="CStart_1" name="Child Start">
+      <bpmn:outgoing>CFlow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="CFatalTask_1" name="Fatal Task" implementation="nonexistent_handler">
+      <bpmn:incoming>CFlow_1</bpmn:incoming>
+      <bpmn:outgoing>CFlow_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="CEnd_1" name="Child End">
+      <bpmn:incoming>CFlow_2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="CFlow_1" sourceRef="CStart_1" targetRef="CFatalTask_1" />
+    <bpmn:sequenceFlow id="CFlow_2" sourceRef="CFatalTask_1" targetRef="CEnd_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_child_retry_ca">
+    <bpmndi:BPMNPlane id="BPMNPlane_child_retry_ca" bpmnElement="Collaboration_child_retry_ca">
+      <bpmndi:BPMNShape id="Shape_Participant_child_retry_ca" bpmnElement="Participant_child_retry_ca" isHorizontal="true">
+        <dc:Bounds x="102" y="130" width="386" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_CStart_1" bpmnElement="CStart_1">
+        <dc:Bounds x="162" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_CFatalTask_1" bpmnElement="CFatalTask_1">
+        <dc:Bounds x="260" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_CEnd_1" bpmnElement="CEnd_1">
+        <dc:Bounds x="422" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_CFlow_1" bpmnElement="CFlow_1">
+        <di:waypoint x="198" y="200" />
+        <di:waypoint x="260" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_CFlow_2" bpmnElement="CFlow_2">
+        <di:waypoint x="360" y="200" />
+        <di:waypoint x="422" y="200" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

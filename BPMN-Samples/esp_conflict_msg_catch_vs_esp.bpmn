@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bfw="https://bifrostforge.world/schema/bpmn" id="Definitions_MsgCatchVsEsp" targetNamespace="https://bifrostforge.world/schema/bpmn" exporter="Bifrost Forge World" exporterVersion="0.1.0">
+  <bpmn:extensionElements>
+    <bfw:properties>
+      <bfw:linterRulesetScore rulesetId="bpmn-production-ready" scorePercent="100" complianceStatus="valid" computedAtIso="2026-09-23T20:07:43.173Z" schemaVersion="1" maxPoints="11" penaltyPoints="0" rawErrorFindings="0" rawWarningFindings="0" />
+      <bfw:linterRulesetScore rulesetId="bpmn-development" scorePercent="100" complianceStatus="valid" computedAtIso="2026-09-23T20:07:51.218Z" schemaVersion="1" maxPoints="11" penaltyPoints="0" rawErrorFindings="0" rawWarningFindings="0" />
+    </bfw:properties>
+  </bpmn:extensionElements>
+  <bpmn:message id="Msg_Conflict" name="conflict-message" />
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_1" name="Default" processRef="EspConflictMsgCatchVsEsp" />
+  </bpmn:collaboration>
+  <bpmn:process id="EspConflictMsgCatchVsEsp" name="Message Catch vs ESP" isExecutable="true">
+    <bpmn:extensionElements>
+      <bfw:version>1.0.0</bfw:version>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_default" name="default">
+        <bpmn:flowNodeRef>Start_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Catch_Msg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Caught</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ESP_Message</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="Catch_Msg" name="Wait for Message">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Catch_MsgDef" messageRef="Msg_Conflict" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="End_Caught" name="Message Caught">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="Start_1" targetRef="Catch_Msg" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Catch_Msg" targetRef="End_Caught" />
+    <bpmn:subProcess id="ESP_Message" name="Message ESP" triggeredByEvent="true">
+      <bpmn:startEvent id="ESP_Msg_Start" name="ESP Message Start">
+        <bpmn:outgoing>ESP_Msg_Flow_1</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="ESP_Msg_Def" messageRef="Msg_Conflict" />
+      </bpmn:startEvent>
+      <bpmn:endEvent id="ESP_Msg_End" name="ESP End">
+        <bpmn:incoming>ESP_Msg_Flow_1</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="ESP_Msg_Flow_1" sourceRef="ESP_Msg_Start" targetRef="ESP_Msg_End" />
+    </bpmn:subProcess>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Shape_Participant_1" bpmnElement="Participant_1" isHorizontal="true">
+        <dc:Bounds x="82" y="60" width="526" height="340" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_default" bpmnElement="Lane_default" isHorizontal="true">
+        <dc:Bounds x="112" y="60" width="496" height="340" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Start_1" bpmnElement="Start_1">
+        <dc:Bounds x="162" y="142" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Catch_Msg" bpmnElement="Catch_Msg">
+        <dc:Bounds x="302" y="142" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_Caught" bpmnElement="End_Caught">
+        <dc:Bounds x="462" y="142" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ESP_Message" bpmnElement="ESP_Message" isExpanded="true">
+        <dc:Bounds x="170" y="240" width="300" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ESP_Msg_Start" bpmnElement="ESP_Msg_Start">
+        <dc:Bounds x="200" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="183" y="318" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ESP_Msg_End" bpmnElement="ESP_Msg_End">
+        <dc:Bounds x="370" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="366" y="318" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_ESP_Msg_Flow_1" bpmnElement="ESP_Msg_Flow_1">
+        <di:waypoint x="236" y="300" />
+        <di:waypoint x="370" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_1" bpmnElement="Flow_1">
+        <di:waypoint x="198" y="160" />
+        <di:waypoint x="302" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_2" bpmnElement="Flow_2">
+        <di:waypoint x="338" y="160" />
+        <di:waypoint x="462" y="160" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

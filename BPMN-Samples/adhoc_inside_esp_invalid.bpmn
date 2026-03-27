@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bfw="https://bifrostforge.world/schema/bpmn" id="Definitions_1" targetNamespace="https://bifrostforge.world/schema/bpmn" exporter="Bifrost Forge World" exporterVersion="0.1.0">
+  <bpmn:extensionElements>
+    <bfw:properties>
+      <bfw:linterRulesetScore rulesetId="bpmn-production-ready" scorePercent="86.66666666666667" complianceStatus="failed" computedAtIso="2026-09-23T20:07:41.641Z" schemaVersion="1" maxPoints="15" penaltyPoints="2" rawErrorFindings="3" rawWarningFindings="2" />
+      <bfw:linterRulesetScore rulesetId="bpmn-development" scorePercent="92.85714285714286" complianceStatus="valid" computedAtIso="2026-09-25T10:54:59.543Z" schemaVersion="1" maxPoints="14" penaltyPoints="1" rawErrorFindings="1" rawWarningFindings="0" />
+    </bfw:properties>
+  </bpmn:extensionElements>
+  <bpmn:message id="Message_trigger" name="trigger-esp" />
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_1" name="Default" processRef="AdHocInsideEspInvalid" />
+  </bpmn:collaboration>
+  <bpmn:process id="AdHocInsideEspInvalid" name="Ad-hoc Inside ESP Invalid" isExecutable="true">
+    <bpmn:extensionElements>
+      <bfw:version>1.0.0</bfw:version>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_default" name="default">
+        <bpmn:flowNodeRef>ESP_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Start_1</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:subProcess id="ESP_1" name="Event Subprocess" triggeredByEvent="true">
+      <bpmn:startEvent id="ESP_Start" name="Message Trigger">
+        <bpmn:outgoing>ESP_Flow_1</bpmn:outgoing>
+        <bpmn:messageEventDefinition messageRef="Message_trigger" />
+      </bpmn:startEvent>
+      <bpmn:adHocSubProcess id="ESP_AdHoc" name="Ad-hoc Inside ESP (Invalid)">
+        <bpmn:incoming>ESP_Flow_1</bpmn:incoming>
+        <bpmn:outgoing>ESP_Flow_2</bpmn:outgoing>
+        <bpmn:scriptTask id="ESP_Script" name="ESP Script" scriptFormat="feel">
+          <bpmn:script>{ esp_result: "done" }</bpmn:script>
+        </bpmn:scriptTask>
+      </bpmn:adHocSubProcess>
+      <bpmn:endEvent id="ESP_End" name="ESP End">
+        <bpmn:incoming>ESP_Flow_2</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="ESP_Flow_1" sourceRef="ESP_Start" targetRef="ESP_AdHoc" />
+      <bpmn:sequenceFlow id="ESP_Flow_2" sourceRef="ESP_AdHoc" targetRef="ESP_End" />
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="Start_1" targetRef="Task_1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_1" targetRef="End_1" />
+    <bpmn:endEvent id="End_1" name="End">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:task id="Task_1" name="Main Task">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:startEvent id="Start_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Shape_Participant_1" bpmnElement="Participant_1" isHorizontal="true">
+        <dc:Bounds x="82" y="80" width="800" height="400" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lane_default" bpmnElement="Lane_default" isHorizontal="true">
+        <dc:Bounds x="112" y="80" width="770" height="400" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_1" bpmnElement="End_1">
+        <dc:Bounds x="622" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="630" y="168" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_1" bpmnElement="Task_1">
+        <dc:Bounds x="380" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Start_1" bpmnElement="Start_1">
+        <dc:Bounds x="202" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="208" y="168" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ESP_1" bpmnElement="ESP_1" isExpanded="true">
+        <dc:Bounds x="160" y="250" width="560" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ESP_Start" bpmnElement="ESP_Start">
+        <dc:Bounds x="190" y="332" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ESP_AdHoc" bpmnElement="ESP_AdHoc" isExpanded="true">
+        <dc:Bounds x="300" y="280" width="240" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ESP_Script" bpmnElement="ESP_Script">
+        <dc:Bounds x="370" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ESP_End" bpmnElement="ESP_End">
+        <dc:Bounds x="620" y="332" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_ESP_Flow_1" bpmnElement="ESP_Flow_1">
+        <di:waypoint x="226" y="350" />
+        <di:waypoint x="300" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_ESP_Flow_2" bpmnElement="ESP_Flow_2">
+        <di:waypoint x="540" y="350" />
+        <di:waypoint x="620" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_1" bpmnElement="Flow_1">
+        <di:waypoint x="238" y="150" />
+        <di:waypoint x="380" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_2" bpmnElement="Flow_2">
+        <di:waypoint x="480" y="150" />
+        <di:waypoint x="622" y="150" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
