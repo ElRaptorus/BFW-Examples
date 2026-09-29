@@ -46,7 +46,7 @@
       <bpmn:userTask id="Activity_0spoll4" name="Enter evil stuff">
         <bpmn:extensionElements>
           <bfw:formFields>[{"id":"field_text_1781958310229_1","type":"text","label":"Text","required":true,"defaultValue":"hamlo","hint":"asdsasad"}]</bfw:formFields>
-          <bfw:formActions>[{"id":"action_cancel_1781958321857_3","label":"Cancel","preset":"cancel","submitsForm":false,"isDefault":false,"isDanger":true},{"id":"action_confirm_1781958318550_1","label":"Confirm","preset":"confirm","submitsForm":true,"isDefault":true}]</bfw:formActions>
+          <bfw:formActions>[{"id":"action_cancel_1781958321857_3","label":"Cancel","preset":"cancel","effect":"dismiss","isDefault":false,"isDanger":true},{"id":"action_confirm_1781958318550_1","label":"Confirm","preset":"confirm","effect":"submit","isDefault":true}]</bfw:formActions>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_1rbib41</bpmn:incoming>
         <bpmn:outgoing>Flow_02ch3g3</bpmn:outgoing>

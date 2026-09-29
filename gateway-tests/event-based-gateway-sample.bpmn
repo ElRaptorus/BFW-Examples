@@ -80,7 +80,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" />
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0au2stg" sourceRef="Gateway_1jzaprg" targetRef="Event_12ssk5f">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.finishWithError = true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.values.finishWithError = true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_0jphxfu">
       <bpmn:incoming>Flow_0l608ab</bpmn:incoming>
@@ -97,7 +97,7 @@
     </bpmn:endEvent>
     <bpmn:userTask id="Activity_0jcxref" name="Poop">
       <bpmn:extensionElements>
-        <bfw:formActions>[{"id":"action_ok_1782413259761_1","label":"OK","preset":"ok","submitsForm":true,"isDefault":true}]</bfw:formActions>
+        <bfw:formActions>[{"id":"action_ok_1782413259761_1","label":"OK","preset":"ok","effect":"submit","isDefault":true}]</bfw:formActions>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1uoqh9l</bpmn:incoming>
       <bpmn:outgoing>Flow_02lv5km</bpmn:outgoing>
@@ -116,7 +116,7 @@
     <bpmn:userTask id="Activity_114cxtu" name="Pick End Event">
       <bpmn:extensionElements>
         <bfw:formFields>[{"id":"finishWithError","type":"checkbox","label":"Finish With Error?","required":true,"defaultValue":"false","options":[],"hint":"If not: The Terminate End Event is used"}]</bfw:formFields>
-        <bfw:formActions>[{"id":"action_ok_1782411570425_1","label":"OK","preset":"ok","submitsForm":true,"isDefault":true}]</bfw:formActions>
+        <bfw:formActions>[{"id":"action_ok_1782411570425_1","label":"OK","preset":"ok","effect":"submit","isDefault":true}]</bfw:formActions>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1rdx2d2</bpmn:incoming>
       <bpmn:outgoing>Flow_1m3o70c</bpmn:outgoing>

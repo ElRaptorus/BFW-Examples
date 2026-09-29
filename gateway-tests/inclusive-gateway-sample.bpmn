@@ -45,25 +45,25 @@
     </bpmn:laneSet>
     <bpmn:sequenceFlow id="Flow_00w8556" sourceRef="StartEvent_1" targetRef="BranchPicker" />
     <bpmn:sequenceFlow id="Flow_0hm10hw" sourceRef="Gateway_1wrpf4s" targetRef="SubBranchPicker">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.Subprocesses = true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.values.Subprocesses = true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1cfqlcf" sourceRef="Gateway_1wrpf4s" targetRef="Activity_0nv2gap">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.SendTask = true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.values.SendTask = true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0ip97f7" sourceRef="Gateway_1wrpf4s" targetRef="Activity_1a34cbl">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.UserTask = true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.values.UserTask = true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_00i2l0v" sourceRef="Gateway_1wrpf4s" targetRef="Gateway_198oalj">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.EBG = true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.values.EBG = true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0y2zqnz" sourceRef="Gateway_1wrpf4s" targetRef="Event_1gopvm7">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.TimerCatch = true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.values.TimerCatch = true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0q6tku2" sourceRef="Gateway_0802nm0" targetRef="Activity_1a7ggtu">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.UpperBranch = true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.values.UpperBranch = true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1wcf1in" sourceRef="Gateway_0802nm0" targetRef="Activity_11rj777">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.LowerBranch = true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">token.values.LowerBranch = true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1j67esh" sourceRef="Activity_1a7ggtu" targetRef="Gateway_072p6rq" />
     <bpmn:sequenceFlow id="Flow_0tgkaz7" sourceRef="Activity_11rj777" targetRef="Gateway_0rv2jlg" />
@@ -85,7 +85,7 @@
     </bpmn:callActivity>
     <bpmn:userTask id="Activity_1a34cbl" name="Do random user stuff">
       <bpmn:extensionElements>
-        <bfw:formActions>[{"id":"action_ok_1782464014137_1","label":"OK","preset":"ok","submitsForm":true,"isDefault":true}]</bfw:formActions>
+        <bfw:formActions>[{"id":"action_ok_1782464014137_1","label":"OK","preset":"ok","effect":"submit","isDefault":true}]</bfw:formActions>
         <bfw:formFields>[{"id":"field_text_1782464016598_1","type":"text","label":"POOOOOOOOOOP","required":false,"defaultValue":"face"}]</bfw:formFields>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0ip97f7</bpmn:incoming>
@@ -222,7 +222,7 @@
     <bpmn:userTask id="SubBranchPicker" name="Pick Sub-Branches">
       <bpmn:extensionElements>
         <bfw:formFields>[{"id":"UpperBranch","type":"checkbox","label":"Upper Branch","required":true,"options":[],"defaultValue":"true"},{"id":"LowerBranch","type":"checkbox","label":"Lower Branch","required":false,"defaultValue":"true"}]</bfw:formFields>
-        <bfw:formActions>[{"id":"action_ok_1782504986920_1","label":"OK","preset":"ok","submitsForm":true,"isDefault":true}]</bfw:formActions>
+        <bfw:formActions>[{"id":"action_ok_1782504986920_1","label":"OK","preset":"ok","effect":"submit","isDefault":true}]</bfw:formActions>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0hm10hw</bpmn:incoming>
       <bpmn:outgoing>Flow_1jo6lns</bpmn:outgoing>

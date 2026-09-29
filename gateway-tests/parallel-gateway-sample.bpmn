@@ -93,7 +93,7 @@
     </bpmn:callActivity>
     <bpmn:userTask id="Activity_1a34cbl" name="Do random user stuff">
       <bpmn:extensionElements>
-        <bfw:formActions>[{"id":"action_ok_1782464014137_1","label":"OK","preset":"ok","submitsForm":true,"isDefault":true}]</bfw:formActions>
+        <bfw:formActions>[{"id":"action_ok_1782464014137_1","label":"OK","preset":"ok","effect":"submit","isDefault":true}]</bfw:formActions>
         <bfw:formFields>[{"id":"field_text_1782464016598_1","type":"text","label":"POOOOOOOOOOP","required":false,"defaultValue":"face"}]</bfw:formFields>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0ip97f7</bpmn:incoming>
